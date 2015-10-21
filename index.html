@@ -66,11 +66,26 @@
     info.update(layer.feature.properties);
 	}
 
+	// clear selected polygons
+	function resetFeature(e){
+		geojson.resetStyle(e.target);
+		// Subtraction assignment operator (-=) removes a value from a variable
+    layer.feature.properties.PopACS2013 -= totalPop;
+		totalIncome -= layer.feature.properties.IncACS2013;
+		totalTaxable -= layer.feature.properties.ENGLY2012;
+		// calculates values per person
+		metroPerCapIncome = totalIncome/totalPop;
+		metroPerCapTaxable = totalTaxable/totalPop;
+    // updates display
+    info.update(layer.feature.properties);
+	}
+
 	// event listeners for hovering or clicking on town polygons
 	function onEachFeature(feature, layer) {
     layer.on({
     	mouseover: highlightFeature,
-        click: chooseFeature
+      click: chooseFeature
+			// dblclick: resetFeature
     });
 	}
 
@@ -95,7 +110,7 @@
 		'<h4>Click to merge Connecticut towns into<br />a hypothetical metropolitan region:</h4>' +
 		(props ? '<b>' + props.Town + '</b>' + '<br />' +
 		comma(props.PopACS2013) + ' people' + '<br />$' +
-		comma(props.IncACS2013/props.PopACS2013) + ' income per capita' + '<br />$' + 
+		comma(props.IncACS2013/props.PopACS2013) + ' income per capita' + '<br />$' +
 		comma(props.ENGLY2012/props.PopACS2013) + ' taxable property per capita' + '<br /><b>' +
 		'Merged region (2012-13 data)' + '</b><br />' +
 		(props ? comma(checkNull(totalPop,false)) : '---') + ' people' + '<br />$' +

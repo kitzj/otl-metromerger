@@ -5,8 +5,8 @@ Metropolitan merger simulation with Leaflet choropleth map framework for On The 
 http://jackdougherty.github.io/otl-metromerger
 
 ## To Do
-- add reset button to clear selected polygons (remove and readd geoJson layer? or just refresh browser?)
-- can click event listener be modified to toggle? Turn off selected polygons that have already been turned on?
+- adapt Natasha's code to toggle selected polygons and calculations
+- reset button to clear selected polygons (remove and readd geoJson layer? or just refresh browser?)
 - find way to present infowindow data as a table or grid
 - add link to data source
 - start a second version: a School District merger tool, possibly with CT only data layer, or EdBuild national data layer?
