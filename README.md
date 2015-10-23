@@ -8,12 +8,15 @@ http://jackdougherty.github.io/otl-metromerger
 [iframe src="http://jackdougherty.github.io/otl-metromerger" width="100%" height=520]
 
 ## To Do
-- insert data source, year, and link (possibly on same line as "export results" and make sure that it also appears in exported output)
-- start other versions: a School District merger tool, possibly with CT only data layer, or EdBuild national data layer?
-- future redesign to display both indiv and merged data inside info window, perhaps in 2-row table with headings, to unify display and remove redundant labels
+- Create better solution to display source data. Currently, source data downloadable via a hard-coded link (data.csv) to GitHub Pages
+- Start other versions: a School District merger tool, possibly with CT only data layer, or EdBuild national data layer?
+- Future redesign to display both indiv and merged data inside info window, perhaps in 2-row table with headings, to unify display and remove redundant labels
 
 
 ## Steps to construct this
+
+Note: To join new data to the existing Connecticut towns geojson file, it may be possible to use http://mapshaper.org command line tools to jump over steps 2-3-4. See https://github.com/mbloch/mapshaper/wiki/Introduction-to-the-Command-Line-Tool#join-an-external-data-table-to-a-feature-layer
+
 1) Begin with Leaflet choropleth tutorial at http://leafletjs.com/examples/choropleth.html
 
 2) Create simplified geoJson layer of Connecticut town boundaries
