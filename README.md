@@ -1,15 +1,13 @@
 # otl-metromerger
-Metropolitan merger simulation with Leaflet choropleth map framework for On The Line project (http://OnTheLine.trincoll.edu)
+Metropolitan merger simulation with Leaflet choropleth map framework for On The Line book (http://OnTheLine.trincoll.edu)
 
 ## Demo
 http://jackdougherty.github.io/otl-metromerger
 
 ## To Do
-- adapt Natasha's code to toggle selected polygons and calculations
-- reset button to clear selected polygons (remove and readd geoJson layer? or just refresh browser?)
-- find way to present infowindow data as a table or grid
-- add link to data source
+- insert data source year, and link to view data
 - start a second version: a School District merger tool, possibly with CT only data layer, or EdBuild national data layer?
+- redesign to display both indiv and merged data inside info window, perhaps in 2-row table with headings
 
 
 ## Steps to construct this
@@ -40,5 +38,6 @@ var data =
 
 ## Credits
 - Thanks to the creator of the Leaflet Interactive Choropleth Map tutorial (http://leafletjs.com/examples/choropleth.html)
-- Thanks to @alvinschang at CT Mirror, since this map borrows functions to display info window data, based on examples such as http://projects.ctmirror.org/content/2014/05/raceSchools/
+- Thanks to @alvinschang at CT Mirror for creating functions to display info window data, based on examples such as http://projects.ctmirror.org/content/2014/05/raceSchools/
 - Thanks to @erose for helping me with the JavaScript logic
+- Thanks to @nav10003 Natalia Vorotyntseva at UConn MAGIC (http://magic.lib.uconn.edu) for code to toggle on/off polygons, display results for multiple regions, and export results
