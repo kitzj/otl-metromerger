@@ -5,7 +5,9 @@ Simulate the merger (or redistricting) of smaller polygon areas into larger regi
 http://jackdougherty.github.io/otl-metromerger
 
 ## iframe shortcode for OnTheLine book
+```
 [iframe src="http://jackdougherty.github.io/otl-metromerger" width="100%" height=520]
+```
 
 ## To Do
 - Create better solution to display source data. Currently, source data downloadable via a hard-coded link (data.csv) to GitHub Pages
