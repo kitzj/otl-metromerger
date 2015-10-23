@@ -1,13 +1,16 @@
 # otl-metromerger
-Metropolitan merger simulation with Leaflet choropleth map framework for On The Line book (http://OnTheLine.trincoll.edu)
+Simulate the merger (or redistricting) of smaller polygon areas into larger regions, with Leaflet choropleth map framework for On The Line book (http://OnTheLine.trincoll.edu)
 
 ## Demo
 http://jackdougherty.github.io/otl-metromerger
 
+## iframe shortcode for OnTheLine book
+[iframe src="http://jackdougherty.github.io/otl-metromerger" width="100%" height=520]
+
 ## To Do
-- insert data source year, and link to view data
-- start a second version: a School District merger tool, possibly with CT only data layer, or EdBuild national data layer?
-- redesign to display both indiv and merged data inside info window, perhaps in 2-row table with headings
+- insert data source, year, and link (possibly on same line as "export results" and make sure that it also appears in exported output)
+- start other versions: a School District merger tool, possibly with CT only data layer, or EdBuild national data layer?
+- future redesign to display both indiv and merged data inside info window, perhaps in 2-row table with headings, to unify display and remove redundant labels
 
 
 ## Steps to construct this
