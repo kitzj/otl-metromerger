@@ -1,7 +1,7 @@
 # otl-metromerger
-Simulate the merger (or redistricting) of smaller polygon areas into larger regions, with Leaflet thematic map
+Simulate the merger (or redistricting) of smaller polygon areas into larger regions, with Leaflet thematic hover map
 
-## Demo
+## Link
 http://jackdougherty.github.io/otl-metromerger/index.html
 
 ## Shortcode to embed in http://OnTheLine.trincoll.edu
@@ -12,7 +12,7 @@ http://jackdougherty.github.io/otl-metromerger/index.html
 ## To Do
 - Simplify data file and instructions below
 - Create better solution to display source data. Currently, source data downloadable via a hard-coded link (data.csv) to GitHub Pages
-- Start other versions: a School District merger tool, possibly with CT only data layer, or EdBuild national data layer?
+- Create a CT School District merger tool
 - Future redesign to display both indiv and merged data inside info window, perhaps in 2-row table with headings, to unify display and remove redundant labels
 
 
