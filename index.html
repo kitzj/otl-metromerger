@@ -47,7 +47,12 @@
 	</div>
 
 <script type="text/javascript">
-	var map = L.map('map',{doubleClickZoom: false, zoomControl: false}).setView([41.5, -72.71], 9);
+	var map = L.map('map',{
+		center: [41.5, -72.71],
+		zoom: 9,
+		scrollWheelZoom: false, 
+		zoomControl: false
+	});
 
 	// customize source link to your GitHub repo
 	map.attributionControl
