@@ -4,15 +4,16 @@
 	<title>MetroMerger</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- Load Leaflet from CDN-->
-	<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
-	<!-- Load data.js (town polygons) and css from local directory -->
-	<script type="text/javascript" src="data.js"></script>
-	<link rel="stylesheet" href="style.css" />
+	<!-- Load Leaflet from a https CDN, not http. Leaflet 1.x not yet supported. -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+	<!-- jQuery dependencies -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+	<!-- Load data.js (town polygons) and css from local directory -->
+	<script type="text/javascript" src="data.js"></script>
+	<link rel="stylesheet" href="style.css" />
 	<script>
 	$(function() {
 		$("#accordion").accordion({
@@ -46,11 +47,11 @@
 	</div>
 
 <script type="text/javascript">
-	var map = L.map('map',{doubleClickZoom: false, zoomControl: false}).setView([41.5, -73], 9);
+	var map = L.map('map',{doubleClickZoom: false, zoomControl: false}).setView([41.5, -72.71], 9);
 
 	// customize source link to your GitHub repo
 	map.attributionControl
-	.setPrefix('View <a href="http://github.com/jackdougherty/otl-metromerger">code on GitHub</a>, created with <a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>');
+	.setPrefix('View <a href="http://github.com/jackdougherty/otl-metromerger" target="_blank">code on GitHub</a>, created with <a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>');
 	new L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
 	}).addTo(map);

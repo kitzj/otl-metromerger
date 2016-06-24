@@ -1,15 +1,16 @@
 # otl-metromerger
-Simulate the merger (or redistricting) of smaller polygon areas into larger regions, with Leaflet choropleth map framework for On The Line book (http://OnTheLine.trincoll.edu)
+Simulate the merger (or redistricting) of smaller polygon areas into larger regions, with Leaflet thematic map
 
 ## Demo
-http://jackdougherty.github.io/otl-metromerger
+http://jackdougherty.github.io/otl-metromerger/index.html
 
-## iframe shortcode for OnTheLine book
+## Shortcode to embed in http://OnTheLine.trincoll.edu
 ```
-[iframe src="http://jackdougherty.github.io/otl-metromerger" width="100%" height=520]
+[iframe src="http://jackdougherty.github.io/otl-metromerger/index.html" width="100%" height=520]
 ```
 
 ## To Do
+- Simplify data file and instructions below
 - Create better solution to display source data. Currently, source data downloadable via a hard-coded link (data.csv) to GitHub Pages
 - Start other versions: a School District merger tool, possibly with CT only data layer, or EdBuild national data layer?
 - Future redesign to display both indiv and merged data inside info window, perhaps in 2-row table with headings, to unify display and remove redundant labels
@@ -17,7 +18,7 @@ http://jackdougherty.github.io/otl-metromerger
 
 ## Steps to construct this
 
-Note: To join new data to the existing Connecticut towns geojson file, it may be possible to use http://mapshaper.org command line tools to jump over steps 2-3-4. See https://github.com/mbloch/mapshaper/wiki/Introduction-to-the-Command-Line-Tool#join-an-external-data-table-to-a-feature-layer
+Simplify instructions below: To join new data to the existing Connecticut towns geojson file, use http://mapshaper.org command line tools to jump over steps 2-3-4. See http://www.datavizforall.org/shape/mapshaper/index.html
 
 1) Begin with Leaflet choropleth tutorial at http://leafletjs.com/examples/choropleth.html
 
