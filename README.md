@@ -10,7 +10,9 @@ http://jackdougherty.github.io/otl-metromerger/index.html
 ```
 
 ## To Do
-- Simplify data file and instructions below
+- upload newer data and simplify into .geojson format; update instructions below
+- Create index-frame.html with caption, sources, credits
+- Update CDN and add MAGIC GA code
 - Create better solution to display source data. Currently, source data downloadable via a hard-coded link (data.csv) to GitHub Pages
 - Create a CT School District merger tool
 - Future redesign to display both indiv and merged data inside info window, perhaps in 2-row table with headings, to unify display and remove redundant labels
