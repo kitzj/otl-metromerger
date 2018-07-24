@@ -2,11 +2,11 @@
 Simulate the merger (or redistricting) of smaller polygon areas into larger regions, with Leaflet thematic hover map
 
 ## Link
-http://jackdougherty.github.io/otl-metromerger/index.html
+https://jackdougherty.github.io/otl-metromerger/index.html
 
 ## Shortcode to embed in http://OnTheLine.trincoll.edu
 ```
-[iframe src="http://jackdougherty.github.io/otl-metromerger/index.html" width="100%" height=520]
+[iframe src="https://jackdougherty.github.io/otl-metromerger/index.html" width="100%" height=520]
 ```
 
 ## To Do
