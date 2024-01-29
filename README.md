@@ -10,11 +10,18 @@ https://ontheline.github.io/otl-metromerger/index.html
 ```
 
 ## To Do
-- upload newer data and simplify into .geojson format; update instructions below
+- update data sources from CT Open Data, Municipal Fiscal Indicators 2021 https://data.ct.gov/Local-Government/Municipal-Fiscal-Indicators-Economic-and-Grand-Lis/jrwx-mxhm/about_data
+  - Town
+  - Population 2021 (from Census ACS)
+  - Income per capita 2021 (from Census ACS)
+  - Equalized Net Grand List (ENGL) as "taxable property" (from CT OPM)
+- update to newer Leaflet hosted CDN https://leafletjs.com/download.html
+- update to newer jQuery hosted CDN https://releases.jquery.com
+- redesign code: simplify from `data.js` to `data.geojson` format, as we do in nearly all other OnTheLine leaflet maps
+- add GA code
+- rewrite all README instructions
 - Create index-frame.html with caption, sources, credits
-- Update CDN and add MAGIC GA code
 - Create better solution to display source data. Currently, source data downloadable via a hard-coded link (data.csv) to GitHub Pages
-- Create a CT School District merger tool
 - Future redesign to display both indiv and merged data inside info window, perhaps in 2-row table with headings, to unify display and remove redundant labels
 
 
