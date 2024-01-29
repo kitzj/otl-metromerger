@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MetroMerger</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Load Leaflet from a https CDN, not http. Leaflet 1.x not yet supported. -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <!-- jQuery dependencies -->
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.js"
+      integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"
+    />
+    <script
+      src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"
+      integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c="
+      crossorigin="anonymous"
+    ></script>
+    <!-- Load data.js (town polygons) and css from local directory -->
+    <!-- <script type="text/javascript" src="data.geojson"></script> -->
+
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      $(function () {
+        $("#accordion").accordion({
+          heightStyle: "content",
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <div id="accordion">
+      <h3 id="region1_title">Metro Region 1</h3>
+      <div>
+        <div id="region1_text" class="merged_stats">No towns selected</div>
+        <ul id="region1_list" class="towns_list"></ul>
+        <small
+          ><a href="data.csv">Data sources 2021</a> -
+          <a href="javascript:export_csv()">Export results</a></small
+        >
+      </div>
+      <h3 id="region2_title">Metro Region 2</h3>
+      <div>
+        <div id="region2_text" class="merged_stats">No towns selected</div>
+        <ul id="region2_list" class="towns_list"></ul>
+        <small
+          ><a href="data.csv">Data sources 2021</a> -
+          <a href="javascript:export_csv()">Export results</a></small
+        >
+      </div>
+      <h3 id="region3_title">Metro Region 3</h3>
+      <div>
+        <div id="region3_text" class="merged_stats">No towns selected</div>
+        <ul id="region3_list" class="towns_list"></ul>
+        <small
+          ><a href="data.csv">Data sources 2021</a> -
+          <a href="javascript:export_csv()">Export results</a></small
+        >
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      var map = L.map("map", {
+        center: [41.5, -72.71],
+        zoom: 9,
+        scrollWheelZoom: false,
+        zoomControl: false,
+      });
+
+      // customize source link to your GitHub repo
+      map.attributionControl.setPrefix(
+        'View <a href="http://github.com/jackdougherty/otl-metromerger" target="_blank">code on GitHub</a>, created with <a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'
+      );
+      new L.tileLayer(
+        "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+        {
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+        }
+      ).addTo(map);
+
+      // move zoom control different corner
+      new L.Control.Zoom({ position: "topright" }).addTo(map);
+
+      var geojson;
+      var totalPop = 0;
+      var totalIncome = 0;
+      var totalTaxable = 0;
+      var metroPerCapIncome = 0;
+      var metroPerCapTaxable = 0;
+
+      // Create 3 region-builders and arrays
+      var poly_colors = ["green", "blue", "purple"];
+      var towns = [[], [], []];
+      var i;
+
+      // style initial map in gray tone
+      function style(feature) {
+        return {
+          fillColor: "gray",
+          weight: 2,
+          opacity: 1,
+          color: "white",
+          dashArray: "3",
+          fillOpacity: 0.5,
+        };
+      }
+      // display data when hovering
+      function highlightFeature(e) {
+        var layer = e.target;
+        info.update(layer.feature.properties);
+      }
+
+      // export results to CSV for 3 regions
+      function export_csv() {
+        var csvContent = "data:text/plain;charset=utf-8,";
+        for (var i = 0; i < 3; i++) {
+          csvContent += "Region " + (i + 1) + ":\r\n";
+          csvContent += update_list(i, 1);
+          csvContent += "\r\n\r\n\r\n";
+        }
+
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "MetroMergerResults.txt");
+
+        link.click();
+      }
+
+      for (key in poly_colors) {
+        var index_for_text = parseInt(key) + 1;
+        $("#region" + index_for_text + "_title").css("color", poly_colors[key]);
+      }
+
+      // Update display list
+      function update_list(region, for_export) {
+        var region_text = "";
+        var total_people = 0;
+        var income_pc = 0;
+        var taxable_pc = 0;
+
+        var index_for_text = region + 1;
+        var towns_present = 0;
+
+        for (key in towns[region]) {
+          if (for_export) {
+            region_text += "- " + towns[region][key][0] + "\r\n";
+          } else {
+            region_text +=
+              "<tr>" +
+              "<td style='border: 1px solid black;'>" +
+              towns[region][key][0] +
+              "</td>" +
+              "<td style='border: 1px solid black;'>" +
+              comma(towns[region][key][1]) +
+              "</td>" +
+              "<td style='border: 1px solid black;'>" +
+              comma(towns[region][key][2] / towns[region][key][1]) +
+              "</td>" +
+              "<td style='border: 1px solid black;'>" +
+              comma(towns[region][key][3] / towns[region][key][1]) +
+              "</td>" +
+              "</tr>";
+          }
+          total_people += towns[region][key][1];
+          income_pc += towns[region][key][2];
+          taxable_pc += towns[region][key][3];
+
+          towns_present = 1;
+        }
+
+        var metroPCIncome = income_pc / total_people;
+        var metroPCTaxable = taxable_pc / total_people;
+
+        if (for_export) {
+          var ret =
+            comma(checkNull(total_people, false)) +
+            " people\r\n$" +
+            comma(checkNull(metroPCIncome, false)) +
+            " income per capita\r\n$" +
+            comma(checkNull(metroPCTaxable, false)) +
+            " taxable property per capita\r\n\r\n" +
+            region_text;
+          return ret;
+        } else {
+          if (towns_present) {
+            var total =
+              "<tr>" +
+              "<td  style='border: 1px solid black;'>" +
+              "<strong>Total</strong>" +
+              "</td>" +
+              "<td  style='border: 1px solid black;'>" +
+              comma(checkNull(total_people, false)) +
+              "</td>" +
+              "<td  style='border: 1px solid black;'>" +
+              comma(checkNull(metroPCIncome, false)) +
+              "</td>" +
+              "<td  style='border: 1px solid black;'>" +
+              comma(checkNull(metroPCTaxable, false)) +
+              "</td>" +
+              "</tr>";
+            $("#region" + index_for_text + "_text").html(
+              "<table style='border-collapse: collapse;'><tr><th style='border: 1px solid black;'>Town</th><th style='border: 1px solid black;'>Population</th><th style='border: 1px solid black;'>Income</th><th style='border: 1px solid black;'>Taxable Property</th></tr>" +
+                region_text +
+                total +
+                "</table>"
+            );
+          } else {
+            $("#region" + index_for_text + "_text").html("No towns selected");
+          }
+          //   $("#region" + index_for_text + "_list").html(region_text);
+        }
+      }
+
+      function chooseFeature(e) {
+        var layer = e.target;
+        var selected_region_num = $("#accordion").accordion("option", "active");
+        var town_id = parseInt(layer._leaflet_id);
+
+        if (layer.feature.properties.region == undefined) {
+          // not selected region
+          layer.setStyle({
+            fillColor: poly_colors[selected_region_num],
+            fillOpacity: 0.7,
+          });
+          layer.feature.properties.region = selected_region_num;
+
+          towns[selected_region_num][town_id] = [
+            layer.feature.properties.Town,
+            layer.feature.properties.PopACS2021,
+            layer.feature.properties.IncACS2021,
+            layer.feature.properties.ENGLY2021,
+          ];
+          update_list(selected_region_num);
+        } else if (layer.feature.properties.region == selected_region_num) {
+          // deselect region
+          layer.setStyle({
+            fillColor: "gray",
+            fillOpacity: 0.5,
+          });
+          layer.feature.properties.region = undefined;
+
+          delete towns[selected_region_num][town_id];
+          update_list(selected_region_num);
+        } else {
+          // switch polygon to another region
+          layer.setStyle({
+            fillColor: poly_colors[selected_region_num],
+            fillOpacity: 0.7,
+          });
+
+          delete towns[layer.feature.properties.region][town_id];
+          towns[selected_region_num][town_id] = [
+            layer.feature.properties.Town,
+            layer.feature.properties.PopACS2021,
+            layer.feature.properties.IncACS2021,
+            layer.feature.properties.ENGLY2021,
+          ];
+
+          update_list(layer.feature.properties.region);
+          update_list(selected_region_num);
+
+          layer.feature.properties.region = selected_region_num;
+        }
+
+        // updates display
+        info.update(layer.feature.properties);
+      }
+
+      // create ability to clear selections
+      function resetFeature(e) {
+        geojson.resetStyle(e.target);
+        totalPop -= layer.feature.properties.PopACS2021;
+        totalIncome -= layer.feature.properties.IncACS2021;
+        totalTaxable -= layer.feature.properties.ENGLY2021;
+        metroPerCapIncome = totalIncome / totalPop;
+        metroPerCapTaxable = totalTaxable / totalPop;
+
+        info.update(layer.feature.properties);
+      }
+
+      // event listeners for hovering or clicking on polygons
+      function onEachFeature(feature, layer) {
+        layer.on({
+          mouseover: highlightFeature,
+          click: chooseFeature,
+          dblclick: resetFeature,
+        });
+      }
+
+      // set up the town map overlay
+      $.getJSON("data.geojson", function (geojsonData) {
+        L.geoJson(geojsonData, {
+          style: style,
+          onEachFeature: onEachFeature,
+        }).addTo(map);
+      });
+
+      // set up the info window
+      var info = L.control({ position: "topleft" }); // location of infobox
+      info.onAdd = function (map) {
+        this._div = L.DomUtil.create("div", "info"); // create a div with a class "info"
+        this.update();
+        return this._div;
+      };
+
+      // update the control info window based on feature properties passed
+      info.update = function (props) {
+        console.log(props);
+        var winName = (this._div.innerHTML =
+          "<h4>Click to merge Connecticut towns<br />into hypothetical metro regions:</h4>" +
+          (props
+            ? "<u>" +
+              props.Town +
+              "</u>" +
+              "<br />" +
+              comma(props.PopACS2021) +
+              " people" +
+              "<br />$" +
+              comma(props.IncACS2021 / props.PopACS2021) +
+              " income per capita" +
+              "<br />$" +
+              comma(props.ENGLY2021 / props.PopACS2021) +
+              " taxable property per capita" +
+              "<br /><b>"
+            : "Hover over a town"));
+      };
+      info.addTo(map);
+      // functions from @alvinschang at CT Mirror to display data in info window
+      function checkNull(val, pct) {
+        if (val > -99999999999) {
+          if (pct) {
+            return (val = Math.round(val * 10) / 10 + "%");
+          } else {
+            return (val = Math.round(val * 10) / 10);
+          }
+        } else {
+          return "No data";
+        }
+      }
+      function checkThePct(a) {
+        if (a > -1) {
+          return Math.round(a * 1000) / 10 + "%";
+        } else {
+          return "--";
+        }
+      }
+      function comma(val) {
+        num = val;
+        val = Math.round(val);
+        while (/(\d+)(\d{3})/.test(val.toString())) {
+          val = val.toString().replace(/(\d+)(\d{3})/, "$1" + "," + "$2");
+        }
+        if (val == "-") {
+          return val;
+        } else if (num < 0) {
+          return "(" + val.replace("-", "") + ")";
+        } else {
+          return "" + val;
+        }
+      }
+    </script>
+  </body>
+</html>

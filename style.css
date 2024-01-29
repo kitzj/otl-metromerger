@@ -1,0 +1,44 @@
+#map {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+#body {
+  font: 14px/16px Arial, Helvetica, sans-serif;
+}
+#accordion {
+  position: absolute;
+  bottom: 1%; /* or top: 20% */
+  left: 1%;
+  width: 350px; /* my best match for info box auto-width */
+  font: 14px/16px Arial, Helvetica, sans-serif;
+}
+#accordion .ui-accordion-content {
+  padding: 6px;
+}
+.info {
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+.info h4 {
+  margin: 0 0 5px;
+  color: "black";
+}
+.towns_list {
+  height: 10px;
+  overflow: auto;
+}
+.merged_stats {
+  height: auto;
+}
+
+.table {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
